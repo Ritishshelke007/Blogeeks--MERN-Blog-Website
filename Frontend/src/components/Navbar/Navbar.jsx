@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaRegPenToSquare } from "react-icons/fa6";
-
-import { Link, Outlet } from "react-router-dom";
+import { userContext } from "../../App";
+import { FaRegBell } from "react-icons/fa";
+import { GoBell } from "react-icons/go";
+import { PiBell } from "react-icons/pi";
+import { Link, Outlet, NavLink } from "react-router-dom";
+import UserNavigationPanel from "../UserNavigationPanel/UserNavigationPanel";
 
 const Navbar = () => {
   const [searchBoxVisible, setSearchBoxVisible] = useState(false);
+
+  const [userNavPanel, setUserNavPanel] = useState(false);
+
+  const {
+    userAuthContext,
+    userAuthContext: { access_token, profile_img },
+  } = useContext(userContext);
   return (
     <>
       <nav className="z-10 sticky top-0 flex items-center gap-12 w-full px-[5vw] py-5 h-[70px] border-b border-grey bg-white">
@@ -30,7 +41,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-3 md:gap-4 ml-auto">
-          <button className="md:hidden bg-gray-300 w-10 h-10 rounded-full flex items-center justify-center">
+          <button className="md:hidden bg-grey w-10 h-10 rounded-full flex items-center justify-center">
             <IoSearchOutline
               className="text-xl"
               onClick={() => setSearchBoxVisible(!searchBoxVisible)}
@@ -45,13 +56,55 @@ const Navbar = () => {
             <p>Write</p>
           </Link>
 
-          <Link to="signin" className="btn-dark">
-            Sign in
-          </Link>
+          {access_token ? (
+            <>
+              <Link to="/dashboard/notification">
+                <button className="w-10 h-10 rounded-full bg-grey flex items-center justify-center hover:bg-black/10">
+                  <PiBell className="text-xl" />
+                </button>
+              </Link>
 
-          <Link to="signup" className="hidden md:block btn-light py-2">
-            Sign up
-          </Link>
+              <div
+                className="relative"
+                onClick={() => setUserNavPanel(!userNavPanel)}
+                onBlur={() => {
+                  setTimeout(() => {
+                    setUserNavPanel(false);
+                  }, 200);
+                }}
+              >
+                <button className="w-10 h-10 flex justify-center items-center">
+                  <img
+                    src={profile_img}
+                    className="w-full h-full object-cover rounded-full"
+                    alt="Profile"
+                  />
+                </button>
+
+                {userNavPanel && <UserNavigationPanel />}
+              </div>
+            </>
+          ) : (
+            <>
+              <NavLink
+                to="signin"
+                className={({ isActive }) =>
+                  isActive ? "btn-light" : "btn-dark"
+                }
+              >
+                Sign in
+              </NavLink>
+
+              <NavLink
+                to="signup"
+                className={({ isActive }) =>
+                  isActive ? "btn-light" : "btn-dark" + " hidden md:block"
+                }
+              >
+                Sign up
+              </NavLink>
+            </>
+          )}
         </div>
       </nav>
 
