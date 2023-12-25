@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar/Navbar";
 import UserAuth from "./pages/UserAuth";
 import { createContext, useState, useEffect } from "react";
 import { lookInSession } from "./common/sessions";
+import Editor from "./pages/Editor";
 
 export const userContext = createContext({});
 
@@ -21,6 +22,7 @@ function App() {
     <>
       <userContext.Provider value={{ userAuthContext, setUserAuthContext }}>
         <Routes>
+          <Route path="/editor" element={<Editor />} />
           <Route path="/" element={<Navbar />}>
             <Route path="/signin" element={<UserAuth type="sign-in" />} />
             <Route path="/signup" element={<UserAuth type="sign-up" />} />

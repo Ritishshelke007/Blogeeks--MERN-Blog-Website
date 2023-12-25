@@ -1,3 +1,4 @@
-import logo from "./blogeeks.png"
+import logo from "./blogeeks.png";
+import blogBanner from "./blog banner.png";
 
-export {logo}
+export { logo, blogBanner };
