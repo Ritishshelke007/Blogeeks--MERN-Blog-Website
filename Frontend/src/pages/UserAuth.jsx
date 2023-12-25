@@ -74,7 +74,12 @@ const UserAuth = ({ type }) => {
 
     googleAuth()
       .then((user) => {
-        console.log(user);
+        let serverRoute = "/google-auth";
+        let formData = {
+          access_token: user.accessToken,
+        };
+
+        userAuthThroughServer(serverRoute, formData);
       })
       .catch((err) => {
         toast.error("Error logging in");
