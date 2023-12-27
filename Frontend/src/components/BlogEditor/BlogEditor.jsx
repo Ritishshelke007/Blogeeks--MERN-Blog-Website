@@ -1,18 +1,21 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import AnimationWrapper from "../../common/page-animation";
 import { blogBanner } from "../../assets/assets";
 import { uploadImage } from "../../common/aws";
 import { Toaster, toast } from "react-hot-toast";
 import { EditorContext } from "../../contexts/EditorContext";
+import { tools } from "../EditorTools/EditorTools";
+import EditorJS from "@editorjs/editorjs";
 
 const BlogEditor = () => {
-  let blogBannerRef = useRef();
-
   let {
     blog,
     blog: { title, banner, content, tags, des },
     setBlog,
+    textEditor,
+    setTextEditor,
+    setEditorState,
   } = useContext(EditorContext);
 
   const handleTitleText = (e) => {
@@ -20,6 +23,7 @@ const BlogEditor = () => {
       e.preventDefault();
     }
   };
+
   const handleTitleChange = (e) => {
     let blogTitle = e.target;
     blogTitle.style.height = "auto";
@@ -52,6 +56,38 @@ const BlogEditor = () => {
     let img = e.target;
     img.src = blogBanner;
   };
+
+  const handlePublish = () => {
+    if (!banner.length) return toast.error("Upload a banner before publish");
+    if (!title.length) return toast.error("Blog title is required");
+    if (textEditor.isReady) {
+      textEditor
+        .save()
+        .then((data) => {
+          if (data.blocks.length) {
+            setBlog({ ...blog, content: data });
+            setEditorState("publish");
+          } else {
+            return toast.error("Please write something in blog");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  useEffect(() => {
+    setTextEditor(
+      new EditorJS({
+        holder: "textEditor",
+        data: content,
+        tools: tools,
+        placeholder: "Let's write an awesome blog",
+      })
+    );
+  }, []);
+
   return (
     <>
       <nav className="navbar">
@@ -64,7 +100,9 @@ const BlogEditor = () => {
         </p>
 
         <div className="flex gap-4 ml-auto">
-          <button className="btn-dark py-2">Publish</button>
+          <button className="btn-dark py-2" onClick={handlePublish}>
+            Publish
+          </button>
           <button className="btn-light py-2">Save Draft</button>
         </div>
       </nav>
@@ -92,11 +130,16 @@ const BlogEditor = () => {
             </div>
 
             <textarea
+              defaultValue={title}
               placeholder="Blog Title"
-              className="text-4xl h-20 font-medium w-full outline-none  resize-none  mt-10 leading-none placeholder:opacity-40"
+              className="text-4xl h-14 font-medium w-full outline-none  resize-none  mt-10 leading-none placeholder:opacity-40"
               onKeyDown={handleTitleText}
               onChange={handleTitleChange}
             ></textarea>
+
+            <hr className="w-full opacity-10 my-5" />
+
+            <div id="textEditor" className="font-gelasio"></div>
           </div>
         </section>
       </AnimationWrapper>

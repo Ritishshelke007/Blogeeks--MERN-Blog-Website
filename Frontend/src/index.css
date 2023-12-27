@@ -41,4 +41,36 @@
   .input-icon {
     @apply absolute left-4 top-1/2 -translate-y-1/2;
   }
+
+  #textEditor h2,
+  h2 {
+    @apply font-inter text-4xl leading-normal font-bold max-md:text-3xl max-md:leading-snug !important;
+  }
+
+  #textEditor h3,
+  h3 {
+    @apply font-inter text-3xl leading-loose max-md:text-2xl max-md:leading-normal !important;
+  }
+
+  #textEditor *,
+  .blog-page-content * {
+    @apply font-gelasio text-lg leading-10 md:text-lg;
+  }
+
+  #textEditor a,
+  .blog-page-content a {
+    @apply text-purple underline hover:opacity-50;
+  }
+
+  .tag {
+    @apply p-3 bg-grey rounded-full px-6 capitalize;
+  }
+
+  .blog-title {
+    @apply text-2xl font-medium leading-7 line-clamp-3 sm:line-clamp-2;
+  }
+
+  .blog-index {
+    @apply text-4xl sm:text-3xl lg:text-5xl font-bold text-grey leading-none;
+  }
 }
