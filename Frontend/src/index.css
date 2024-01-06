@@ -31,7 +31,7 @@
   }
 
   .h-cover {
-    @apply min-h-[calc(100vh-80px)];
+    @apply min-h-[calc(100vh-70px)];
   }
 
   .input-box {
@@ -72,5 +72,9 @@
 
   .blog-index {
     @apply text-4xl sm:text-3xl lg:text-5xl font-bold text-grey leading-none;
+  }
+
+  section {
+    @apply py-4 px-[5vw] md:px-[7vw] lg:px-[10vw];
   }
 }
