@@ -7,6 +7,9 @@ import { Toaster, toast } from "react-hot-toast";
 import { EditorContext } from "../../contexts/EditorContext";
 import { tools } from "../EditorTools/EditorTools";
 import EditorJS from "@editorjs/editorjs";
+import axios from "axios";
+import { userContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 const BlogEditor = () => {
   let {
@@ -17,6 +20,12 @@ const BlogEditor = () => {
     setTextEditor,
     setEditorState,
   } = useContext(EditorContext);
+
+  let {
+    userAuthContext: { access_token },
+  } = useContext(userContext);
+
+  let navigate = useNavigate();
 
   const handleTitleText = (e) => {
     if (e.keyCode == 13) {
@@ -77,6 +86,52 @@ const BlogEditor = () => {
     }
   };
 
+  const handleDraft = (e) => {
+    if (e.target.className.includes("disable")) {
+      return;
+    }
+    if (!title.length) {
+      return toast.error("Please give a blog title");
+    }
+
+    let loadingToast = toast.loading("Saving as draft...");
+    e.target.classList.add("disable");
+
+    if (textEditor.isReady) {
+      textEditor.save().then((content) => {
+        let blogObj = {
+          title,
+          banner,
+          des,
+          tags,
+          content,
+          draft: true,
+        };
+
+        axios
+          .post(import.meta.env.VITE_SERVER_DOMAIN + "/create-blog", blogObj, {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          })
+          .then(() => {
+            e.target.classList.remove("disable");
+            toast.dismiss(loadingToast);
+            toast.success("Blog saved 👍");
+
+            setTimeout(() => {
+              navigate("/");
+            }, 500);
+          })
+          .catch(({ response }) => {
+            e.target.classList.remove("disable");
+            toast.dismiss(loadingToast);
+            return toast.error(response.data.error);
+          });
+      });
+    }
+  };
+
   useEffect(() => {
     setTextEditor(
       new EditorJS({
@@ -103,7 +158,9 @@ const BlogEditor = () => {
           <button className="btn-dark py-2" onClick={handlePublish}>
             Publish
           </button>
-          <button className="btn-light py-2">Save Draft</button>
+          <button className="btn-light py-2" onClick={handleDraft}>
+            Save Draft
+          </button>
         </div>
       </nav>
 
