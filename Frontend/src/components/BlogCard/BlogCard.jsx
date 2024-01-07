@@ -44,7 +44,7 @@ const BlogCard = ({ content, author }) => {
           </div>
         </div>
 
-        <div className="flex md:flex-row flex-col justify-center items-center gap-8">
+        <div className="flex md:flex-row flex-col justify-between items-start gap-8">
           <div>
             <p className="text-slate800 text-xl line-clamp-2 font-bold">
               {title}
