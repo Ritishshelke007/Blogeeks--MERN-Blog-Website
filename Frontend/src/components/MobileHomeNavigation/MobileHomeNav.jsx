@@ -1,4 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
+export let activeTabRef;
+export let activeTab;
 
 const MobileHomeNav = ({
   routes,
@@ -7,8 +9,8 @@ const MobileHomeNav = ({
   children,
 }) => {
   const [activeNavIndex, setActiveNavIndex] = useState(defaultActiveIndex);
-  const activeTabRef = useRef();
-  const activeTab = useRef();
+  activeTabRef = useRef();
+  activeTab = useRef();
 
   const changePageState = (btn, i) => {
     let { offsetWidth, offsetLeft } = btn;

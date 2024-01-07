@@ -68,11 +68,6 @@ const Navbar = () => {
                 className="relative"
                 onClick={() => setUserNavPanel(!userNavPanel)}
                 onMouseLeave={() => setUserNavPanel(false)}
-                // onBlur={() => {
-                //   setTimeout(() => {
-                //     setUserNavPanel(false);
-                //   }, 200);
-                // }}
               >
                 <button className="w-10 h-10 flex justify-center items-center">
                   <img
@@ -87,12 +82,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <NavLink
-                to="signin"
-                className={({ isActive }) =>
-                  isActive ? "btn-light" : "btn-dark"
-                }
-              >
+              <NavLink to="signin" className={"btn-light"}>
                 Sign in
               </NavLink>
               <NavLink

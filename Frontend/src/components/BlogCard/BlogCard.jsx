@@ -18,7 +18,7 @@ const BlogCard = ({ content, author }) => {
 
   return (
     <Link to={`/blog/${id}`} className="">
-      <div className="w-full p-5 mb-7 space-y-4 border border-slate300  rounded-lg">
+      <div className="w-full pb-5 md:p-5 mb-7 space-y-4 border-b md:border border-slate300  rounded-lg">
         <div className="flex gap-2 items-center">
           <div>
             <img
@@ -30,7 +30,7 @@ const BlogCard = ({ content, author }) => {
           <div>
             <p> {fullname} </p>
             <p className="space-x-1">
-              <span className="hidden md:inline-block">@{username} </span>
+              <span className="hidden md:inline-block">@{username}</span>
               <span className="hidden md:inline-block">·</span>
 
               <span>

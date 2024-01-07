@@ -14,6 +14,7 @@ export default {
       slate800: "#1e293b",
       slate500: "#475569",
       slate300: "#cbd5e1",
+      slate200: "#e2e8f0",
     },
     extend: {
       fontFamily: {
