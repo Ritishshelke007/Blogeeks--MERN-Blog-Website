@@ -2,10 +2,8 @@ import React, { useContext, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { userContext } from "../../App";
-import { FaRegBell } from "react-icons/fa";
-import { GoBell } from "react-icons/go";
 import { PiBell } from "react-icons/pi";
-import { Link, Outlet, NavLink } from "react-router-dom";
+import { Link, Outlet, NavLink, useNavigate } from "react-router-dom";
 import UserNavigationPanel from "../UserNavigationPanel/UserNavigationPanel";
 
 const Navbar = () => {
@@ -13,10 +11,20 @@ const Navbar = () => {
 
   const [userNavPanel, setUserNavPanel] = useState(false);
 
+  const navigate = useNavigate();
+
   const {
     userAuthContext,
     userAuthContext: { access_token, profile_img },
   } = useContext(userContext);
+
+  const handleKeyDown = (e) => {
+    let query = e.target.value;
+    if (e.keyCode == 13 && query.length) {
+      navigate(`/search/${query}`);
+    }
+  };
+
   return (
     <>
       <nav className="z-10 sticky top-0 flex items-center gap-12 w-full px-[5vw] py-5 h-[70px] border-b border-grey bg-white">
@@ -35,6 +43,7 @@ const Navbar = () => {
             id="searchtext"
             placeholder="Search"
             className="w-full md:w-auto bg-grey p-3 pl-6 pr-[12%] md:pr-6 rounded-full placeholder:text-gray-800 md:pl-14"
+            onKeyDown={handleKeyDown}
           />
 
           <IoSearchOutline className="text-2xl text-dark-grey absolute right-[10%] md:pointer-events-none md:left-5 top-1/2 -translate-y-1/2" />
