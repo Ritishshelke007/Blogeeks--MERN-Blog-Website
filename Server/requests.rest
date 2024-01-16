@@ -1,6 +1,13 @@
+# POST  http://localhost:3000/get-blog
+# Content-Type: application/json
+
+# {
+#     "blog_id":"Finding-Closest-Points-Faster-Than-O-n-FeuABXnJLNGObljHp0v82"
+# }
+
 POST  http://localhost:3000/get-profile
 Content-Type: application/json
 
 {
-    "username":"ritish1"
+    "username":"ritishshelke007"
 }

@@ -312,18 +312,18 @@ server.post("/search-blogs-of-user", (req, res) => {
 });
 
 server.post("/search-blogs", (req, res) => {
-  let { tag, query, author, page } = req.body;
+  let { tag, query, author, page, limit, eliminate_blog } = req.body;
   let findQuery;
 
   if (tag) {
-    findQuery = { tags: tag, draft: false };
+    findQuery = { tags: tag, draft: false, blog_id: { $ne: eliminate_blog } };
   } else if (query) {
     findQuery = { draft: false, title: new RegExp(query, "i") };
   } else if (author) {
     findQuery = { author, draft: false };
   }
 
-  let maxLimit = 5;
+  let maxLimit = limit ? limit : 2;
 
   Blog.find(findQuery)
     .populate(
@@ -465,6 +465,34 @@ server.post("/create-blog", verifyJWT, (req, res) => {
             .status(500)
             .json({ error: "Failed to update total post count " });
         });
+    })
+    .catch((err) => {
+      return res.status(500).json({ error: err.message });
+    });
+});
+
+server.post("/get-blog", (req, res) => {
+  let { blog_id } = req.body;
+  let incrementVal = 1;
+
+  Blog.findOneAndUpdate(
+    { blog_id },
+    { $inc: { "activity.total_reads": incrementVal } }
+  )
+    .populate(
+      "author",
+      "personal_info.fullname personal_info.username personal_info.profile_img"
+    )
+    .select("title des content banner activity publishedAt blog_id tags")
+    .then((blog) => {
+      User.findOneAndUpdate(
+        { "personal_info.username": blog.author.personal_info.username },
+        { $inc: { "account_info.total_reads": incrementVal } }
+      ).catch((err) => {
+        return res.status(500).json({ error: err.message });
+      });
+
+      return res.status(200).json({ blog });
     })
     .catch((err) => {
       return res.status(500).json({ error: err.message });
