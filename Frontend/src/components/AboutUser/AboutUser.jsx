@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaGithub, FaYoutube } from "react-icons/fa";
 
 const AboutUser = ({ className, bio, social_links, joinedAt }) => {
   let date = new Date(joinedAt);
