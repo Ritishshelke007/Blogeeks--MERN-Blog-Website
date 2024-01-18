@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import AnimationWrapper from "../../common/page-animation";
 import { blogBanner } from "../../assets/assets";
 import { uploadImage } from "../../common/aws";
@@ -20,6 +20,8 @@ const BlogEditor = () => {
     setTextEditor,
     setEditorState,
   } = useContext(EditorContext);
+
+  let { blog_id } = useParams();
 
   let {
     userAuthContext: { access_token },
@@ -109,11 +111,15 @@ const BlogEditor = () => {
         };
 
         axios
-          .post(import.meta.env.VITE_SERVER_DOMAIN + "/create-blog", blogObj, {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          })
+          .post(
+            import.meta.env.VITE_SERVER_DOMAIN + "/create-blog",
+            { ...blogObj, id: blog_id },
+            {
+              headers: {
+                Authorization: `Bearer ${access_token}`,
+              },
+            }
+          )
           .then(() => {
             e.target.classList.remove("disable");
             toast.dismiss(loadingToast);
@@ -136,7 +142,7 @@ const BlogEditor = () => {
     setTextEditor(
       new EditorJS({
         holder: "textEditor",
-        data: content,
+        data: Array.isArray(content) ? content[0] : content,
         tools: tools,
         placeholder: "Let's write an awesome blog",
       })

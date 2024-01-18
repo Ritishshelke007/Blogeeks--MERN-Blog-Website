@@ -44,7 +44,6 @@ const BlogPage = () => {
       })
       .then(({ data: { blog } }) => {
         setBlog(blog);
-        console.log(blog.content);
 
         axios
           .post(import.meta.env.VITE_SERVER_DOMAIN + "/search-blogs", {
@@ -59,7 +58,6 @@ const BlogPage = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         setLoading(false);
       });
   };
