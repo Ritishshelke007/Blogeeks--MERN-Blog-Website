@@ -5,6 +5,7 @@ import AnimationWrapper from "../common/page-animation";
 import Loader from "../components/Loader/Loader";
 import BlogInteraction from "../components/BlogInteraction/BlogInteraction";
 import BlogCard from "../components/BlogCard/BlogCard";
+import BlogContent from "../components/BlogContent/BlogContent";
 
 export const blogStructre = {
   title: "",
@@ -43,6 +44,8 @@ const BlogPage = () => {
       })
       .then(({ data: { blog } }) => {
         setBlog(blog);
+        console.log(blog.content);
+
         axios
           .post(import.meta.env.VITE_SERVER_DOMAIN + "/search-blogs", {
             tag: blog.tags[0],
@@ -111,6 +114,16 @@ const BlogPage = () => {
             </div>
 
             <BlogInteraction />
+
+            <div className="my-12 font-gelasio blog-page-content">
+              {content[0].blocks.map((block, i) => {
+                return (
+                  <div key={i} className="my-4 md:my-8">
+                    <BlogContent block={block} />
+                  </div>
+                );
+              })}
+            </div>
 
             <BlogInteraction />
             {similarBlogs != null && similarBlogs.length ? (
