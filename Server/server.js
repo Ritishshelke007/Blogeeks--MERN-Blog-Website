@@ -13,7 +13,17 @@ import User from "./Schema/User.js";
 import Notification from "./Schema/Notification.js";
 
 const server = express();
+
+server.use(express.json());
+server.use(cors());
 let port = 3000;
+
+server.use;
+cors({
+  origin: [""],
+  methods: ["GET", "POST"],
+  credentials: true,
+});
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccountKey),
@@ -21,9 +31,6 @@ admin.initializeApp({
 
 let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
 let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
-
-server.use(express.json());
-server.use(cors());
 
 mongoose.connect(process.env.DB_LOCATION, {
   autoIndex: true,
