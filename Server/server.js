@@ -43,6 +43,10 @@ const s3 = new aws.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
 });
 
+server.get("/", (req, res) => {
+  res.json("Hello World");
+});
+
 const generateUploadUrl = async () => {
   let date = new Date();
   let imageName = `${nanoid()}-${date}.jpeg`;
