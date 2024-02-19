@@ -2,6 +2,7 @@ import express, { json } from "express";
 import mongoose from "mongoose";
 import "dotenv/config";
 import { nanoid } from "nanoid";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import serviceAccountKey from "./react-blog-website-f59e3-firebase-adminsdk-6ur0h-bce489317c.json" assert { type: "json" };
@@ -13,17 +14,7 @@ import User from "./Schema/User.js";
 import Notification from "./Schema/Notification.js";
 
 const server = express();
-
-server.use(express.json());
-server.use(cors());
 let port = 3000;
-
-server.use;
-cors({
-  origin: ["https://blogeeks.vercel.app"],
-  methods: ["GET", "POST"],
-  credentials: true,
-});
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccountKey),
@@ -31,6 +22,9 @@ admin.initializeApp({
 
 let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
 let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
+
+server.use(express.json());
+server.use(cors());
 
 mongoose.connect(process.env.DB_LOCATION, {
   autoIndex: true,
@@ -41,10 +35,6 @@ const s3 = new aws.S3({
   region: "ap-south-1",
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_ID,
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-});
-
-server.get("/", (req, res) => {
-  res.json("Hello World");
 });
 
 const generateUploadUrl = async () => {
@@ -578,5 +568,3 @@ server.post("/isliked-by-user", verifyJWT, (req, res) => {
 server.listen(port, () => {
   console.log("listening on port " + port);
 });
-
-module.exports = server;

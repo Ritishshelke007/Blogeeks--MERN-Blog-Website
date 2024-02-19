@@ -17,8 +17,6 @@ const UserAuth = ({ type }) => {
 
   console.log(access_token);
 
-  axios.defaults.withCredentials = true;
-
   const userAuthThroughServer = (serverRoute, formData) => {
     axios
       .post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData)
