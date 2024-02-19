@@ -578,3 +578,5 @@ server.post("/isliked-by-user", verifyJWT, (req, res) => {
 server.listen(port, () => {
   console.log("listening on port " + port);
 });
+
+module.exports = server;
