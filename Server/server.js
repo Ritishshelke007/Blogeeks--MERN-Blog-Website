@@ -20,7 +20,7 @@ let port = 3000;
 
 server.use;
 cors({
-  origin: ["https://blogeeks.vercel.app/"],
+  origin: ["https://blogeeks.vercel.app"],
   methods: ["GET", "POST"],
   credentials: true,
 });
